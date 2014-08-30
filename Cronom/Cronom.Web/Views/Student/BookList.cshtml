@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "Book List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<Cronom.Web.Models.BookViewModel>
+
+<div id="page-heading">
+    <ol class="breadcrumb">
+        <li><a href="index.htm">Dashboard</a></li>
+        <li>Extras</li>
+    </ol>
+    <h1>Kitap Listesi</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>Kitaplar</h4>
+                    <div class="options">
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="container">
+                        <div id="products" class="row list-group">
+                            
+                            @foreach (var book in Model)
+                            {
+                                <a href='@string.Format("/Student/Detail/{0}", book.Slug)'>
+                                    <div class="item  col-xs-3 col-lg-3" style="margin-bottom: 20px;">
+                                        <div class="thumbnail">
+                                            <img class="group list-group-image" src="~/Content/assets/img/book-icon.png" alt="" />
+                                            <div class="caption">
+                                                <h4 class="group inner list-group-item-heading">
+                                                    @book.Title
+                                                </h4>
+                                                <p class="group inner list-group-item-text">
+                                                    @book.Author
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            }
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+    
+}

@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Requests";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<Cronom.Web.Models.RentalViewModel>
+
+<div id="page-heading">
+    <ol class="breadcrumb">
+        <li><a href="index.htm">Kiralama Talepleri</a></li>
+        <li>Extras</li>
+    </ol>
+    <h1>Kiralama Talepleri</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>Onay Bekleyen Talepler</h4>
+                    <div class="options">
+                        <a class="panel-collapse" id="btnRefresh" href="javascript:;"><i class="fa fa-refresh"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ISBN</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Rented By</th>
+                                <th>Checkout Date</th>
+                                <th>Return Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            @foreach (var item in Model.Select((value,i) => new {i, value}))
+                            {
+                                <tr>
+                                    <td>@string.Format("{0}", item.i+1)</td>
+                                    <td>@item.value.ISBN</td>
+                                    <td>@item.value.Title</td>
+                                    <td>@item.value.Author</td>
+                                    <td>@item.value.RentedBy</td>
+                                    <td>@item.value.CheckOutDate.ToShortDateString()</td>
+                                    <td>@item.value.ReturnDate.ToShortDateString()</td>
+                                    <td>
+                                        <input type="checkbox" name="my-checkbox" id="@item.value.Id" class="swtch">
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    
+    <script>
+        $(document).ready(function () {
+            $(".swtch").bootstrapSwitch({ onText: 'Onay', offText: 'Red', onColor: 'success', offColor: 'danger'});
+            $(".swtch").bootstrapSwitch('state', false, false);
+            $(".swtch").on('switchChange.bootstrapSwitch', function (event, state) {
+                $this = $(this);
+                //console.log($this.attr('id')); // DOM element
+                //console.log(state); // true | false
+
+                var model = {};
+                model.State = state;
+                model.Id = $this.attr('id');
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/Manager/Check",
+                    data: JSON.stringify(model),
+                    dataType: "json",
+                    success: function (data) {
+                        if(data.IsSuccessful == false) {
+                            alert(data.Message);
+                        };
+                    },
+                    error: function (result) {
+                        alert("Error");
+                    }
+                });
+
+            });
+
+            $('#btnRefresh').click(function () {
+                window.location.href = "/Manager/Requests";
+            });
+
+        });
+    </script>
+    
+
+}

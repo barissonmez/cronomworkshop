@@ -1,0 +1,28 @@
+***Eksikler: Workshop Uygulama Özellikleri bilgilerinin yer aldýðý belgedeki 8 ve 9 numaralý maddeler(Raporlama, Filtreleme, Paging) yetiþtirilemedi.
+
+
+1-Web.config üzerinden ConnectionString bilgisi güncellenmeli.
+2-Uygulama çalýþtýðýnda CronomDB ve içerisindeki üç tablo oluþturulur:
+--Books
+--Rentals
+--Users
+3-Sisteme üç kullanýcý tipinde giriþ yapýlabilir. 
+--User tablosunda üç tip için de test kullanýcýlarý oluþturulmuþtur:
+---SuperAdmin => UserName: super, Password: 123
+---Manager => UserName: brs, Password: 456
+---Student => UserName: E1250, Password: 789
+4-Senaryo:
+--SuperAdmin hesabý uygulamaya giriþ yapar
+---Manager ekleme iþlemleri yapar.
+--Manager giriþ bilgileriyle sisteme giriþ yapar
+---Student ekleme iþlemleri yapar.
+---Student tarafýndan oluþturulan kiralama taleplerine ulaþýp Onaylar veya Reddeder
+--Student giriþ bilgileriyle sisteme giriþ yapar
+---Kitap listesine ulaþýr
+---Kitap listesinden kiralamak istediði kitaba týklayarak Detay sayfasýnda kiralama iþlemlerini gerçekleþtirir
+---Bütün Kiralama Talepleri listesine ulaþarak geçmiþ ve güncel kiralama iþlemlerini görüntüleyip onay bekleyen taleplerini iptal edebilir.
+5-Mevcut Stok durumuyla ilgili verilerin dýþarýya açýldýðý adres:
+-- XML Adresi: http://localhost:Port/api/Stock?type=xml
+-- JSON Adresi: http://localhost:Port/api/Stock?type=json
+
+Ýyi çalýþmalar.

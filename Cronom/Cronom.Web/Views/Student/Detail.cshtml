@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Cronom.Web.Helpers
+@model Cronom.Web.Models.BookViewModel
+
+<div id="page-heading">
+    <h1>@Model.Title</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>Kitap Hakkında Bilgiler</h4>
+                    <div class="options">
+
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="item  col-xs-7 col-lg-7" >
+                        <div class="thumbnail">
+                            <img class="group list-group-image" src="~/Content/assets/img/book-icon.png" alt="" style="float: left; margin-right:30px;" />
+                            <div class="caption">
+                                <h4 class="group inner list-group-item-heading">
+                                    @Model.Title
+                                </h4>
+                                <p class="group inner list-group-item-text">
+                                    Yazar: @Model.Author
+                                </p>
+                                <p class="group inner list-group-item-text">
+                                    Yayıncı: @Model.Publisher
+                                </p>
+                                <p class="group inner list-group-item-text">
+                                    Yayın Yılı: @Model.PublicationYear
+                                </p>
+                                <p class="lead">
+                                    ISBN: @Model.ISBN
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item  col-xs-7 col-lg-7">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Hangi tarihler arasında kiralayacaksınız?</label>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            <input type="text" class="form-control" id="daterangepicker1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">
+                                    <a class="btn btn-success" id="btnRent" href="javascript:;" style="float: right;">Kirala</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+
+    $(document).ready(function () {
+        $('#daterangepicker1').daterangepicker();
+
+
+        $('#btnRent').click(function () {
+
+            var model = {};
+            model.ISBN = "@Model.ISBN";
+            model.StudentId = "@CurrentUser.Identity.Id.ToString()";
+            model.FullDate = $('#daterangepicker1').val();
+            console.log(model);
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "/Student/Rent",
+                data: JSON.stringify(model),
+                dataType: "json",
+                success: function(data) {
+                    alert(data.Message);
+                    window.location.href = "/Student/BookList";
+                },
+                error: function(result) {
+                    alert("Error");
+                }
+        }); 
+
+        });
+    });
+
+
+    </script>
+}

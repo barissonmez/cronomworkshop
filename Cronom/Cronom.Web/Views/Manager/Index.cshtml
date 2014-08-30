@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "Manager Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+     
+@model Cronom.Web.Models.DashboardViewModel
+
+<div id="page-heading">
+    <ol class="breadcrumb">
+        <li><a href="#">Dashboard</a></li>
+    </ol>
+    <h1>Dashboard</h1>
+</div>
+<div class="container">
+    <div class="row">
+    <div class="col-md-3 col-xs-12 col-sm-6">
+        <a class="info-tiles tiles-toyo" href="#">
+            <div class="tiles-heading">TOPLAM STOK</div>
+            <div class="tiles-body-alt">
+                <i class="fa fa-bar-chart-o"></i>
+                <div class="text-center">@Model.TotalStock</div>
+                <small></small>
+            </div>
+            <div class="tiles-footer">-</div>
+        </a>
+    </div>
+    <div class="col-md-3 col-xs-12 col-sm-6">
+        <a class="info-tiles tiles-success" href="#">
+            <div class="tiles-heading">MEVCUT STOK</div>
+            <div class="tiles-body-alt">
+                <i class="fa fa-book"></i>
+                <div class="text-center">@Model.CurrentStock</div>
+                <small></small>
+            </div>
+            <div class="tiles-footer">-</div>
+        </a>
+    </div>
+    <div class="col-md-3 col-xs-12 col-sm-6">
+        <a class="info-tiles tiles-orange" href="#">
+            <div class="tiles-heading">ÖĞRENCİ SAYISI</div>
+            <div class="tiles-body-alt">
+                <i class="fa fa-group"></i>
+                <div class="text-center">@Model.StudentCount</div>
+                <small></small>
+            </div>
+            <div class="tiles-footer">-</div>
+        </a>
+    </div>
+    <div class="col-md-3 col-xs-12 col-sm-6">
+        <a class="info-tiles tiles-alizarin" href="#">
+            <div class="tiles-heading">BEKLEYEN TALEPLER</div>
+            <div class="tiles-body-alt">
+                <i class="fa fa-rss"></i>
+                <div class="text-center">@Model.RequestCount</div>
+                <small></small>
+            </div>
+            <div class="tiles-footer">-</div>
+        </a>
+    </div>
+</div>
+</div>
+

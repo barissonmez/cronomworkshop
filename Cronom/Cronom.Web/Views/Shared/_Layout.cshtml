@@ -1,0 +1,98 @@
+﻿@using Cronom.Web.Domains.Enums
+@using Cronom.Web.Helpers
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Cronom Workshop</title>
+    <link href="~/Content/assets/css/styles.min.css?=113" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
+    <link href="~/Content/assets/demo/variations/header-blue.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/form-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/pines-notify/jquery.pnotify.default.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/bootstrap-toggle/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+</head>
+<body>
+    
+    <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
+        <a id="leftmenu-trigger" class="tooltips" data-toggle="tooltip" data-placement="right" title="Toggle Sidebar"></a>
+
+        <ul class="nav navbar-nav pull-right toolbar">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle username" data-toggle="dropdown">
+                    <span class="hidden-xs"> @CurrentUser.Identity.FullName <i class="fa fa-caret-down"></i></span>
+                    <img src="~/Content/assets/demo/avatar/watson.png" alt="Dangerfield" />
+                </a>
+                <ul class="dropdown-menu userinfo arrow">
+                    <li class="username">
+                        <a href="#">
+                            <div class="pull-left"><img class="userimg" src="~/Content/assets/demo/avatar/watson.png" alt="Jeff Dangerfield" /></div>
+                            <div class="pull-right"><h5>Selam, @CurrentUser.Identity.FullName !</h5><small><span>@CurrentUser.Identity.UserName</span> olarak giriş yaptın.</small></div>
+                        </a>
+                    </li>
+                    <li class="userlinks">
+                        <ul class="dropdown-menu">
+                            <li>
+                                @Html.ActionLink("Çıkış Yap", "Logout", "Account", null, null)
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </header>
+    
+    <div id="page-container">
+        <!-- BEGIN SIDEBAR -->
+        <nav id="page-leftbar" role="navigation">
+            <ul class="acc-menu" id="sidebar">
+                @{
+                    switch (CurrentUser.Identity.UserType)
+                    {
+                        case UserType.Manager:
+                            Html.RenderPartial("_ManagerMenu");
+                            break;
+                        case UserType.Student:
+                            Html.RenderPartial("_StudentMenu");
+                            break;
+                        case UserType.SuperAdmin:
+                            Html.RenderPartial("_AdminMenu");
+                            break;
+                    }
+}
+            </ul>
+            <!-- END SIDEBAR MENU -->
+        </nav>
+        <div id="page-content">
+            <div id='wrap'>
+                @RenderBody()
+            </div><!--wrap -->
+        </div> <!-- page-content -->
+        <footer role="contentinfo">
+            <div class="clearfix">
+                <ul class="list-unstyled list-inline">
+                    <li>Cronom Workshop &copy; @DateTime.Now.Year</li>
+                </ul>
+            </div>
+        </footer>
+    </div><!-- page-container -->
+
+           
+    <script src="~/Content/assets/js/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/assets/js/jqueryui-1.10.3.min.js"></script>
+    <script src="~/Content/assets/js/bootstrap.min.js"></script>
+    <script src="~/Content/assets/js/enquire.js"></script>
+    <script src="~/Content/assets/js/jquery.cookie.js"></script>
+    <script src="~/Content/assets/js/jquery.nicescroll.min.js"></script>
+    <script src="~/Content/assets/plugins/codeprettifier/prettify.js"></script>
+    <script src="~/Content/assets/plugins/form-toggle/toggle.min.js"></script>
+    <script src="~/Content/assets/js/placeholdr.js"></script>
+    <script src="~/Content/assets/plugins/form-daterangepicker/moment.min.js"></script>
+    <script src="~/Content/assets/plugins/form-daterangepicker/daterangepicker.min.js"></script>
+    <script src="~/Content/assets/plugins/pines-notify/jquery.pnotify.min.js"></script>
+    <script src="~/Content/assets/plugins/bootstrap-toggle/js/bootstrap-switch.min.js"></script>
+    <script src="~/Content/assets/js/application.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

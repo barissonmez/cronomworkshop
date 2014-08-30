@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "Requests";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Cronom.Web.Domains.Enums
+@model IEnumerable<Cronom.Web.Models.RentalViewModel>
+
+<div id="page-heading">
+    <ol class="breadcrumb">
+        <li><a href="index.htm">Kiralama Talepleri</a></li>
+        <li>Extras</li>
+    </ol>
+    <h1>Kiralama Talepleri</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>Talep Durumları</h4>
+                    <div class="options">
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ISBN</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Checkout Date</th>
+                                <th>Return Date</th>
+                                <th>Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model.Select((value, i) => new { i, value }))
+                            {
+                                <tr>
+                                    <td>@string.Format("{0}", item.i + 1)</td>
+                                    <td>@item.value.ISBN</td>
+                                    <td>@item.value.Title</td>
+                                    <td>@item.value.Author</td>
+                                    <td>@item.value.CheckOutDate.ToShortDateString()</td>
+                                    <td>@item.value.ReturnDate.ToShortDateString()</td>
+                                    <td>
+                                        @{
+                                            switch (@item.value.State)
+                                            {
+                                                case RentalState.Approved:
+                                                    <p class="text-success">Onaylandı</p>
+                                                    break;
+                                                case RentalState.Pending:
+                                                    <a class="btn btn-orange btnCncl" id="@item.value.Id" href="#">İptal Et</a>
+                                                    break;
+                                                case RentalState.Rejected:
+                                                    <p class="text-danger">Reddedildi</p>
+                                                    break;
+                                            }
+                                         }
+                                        
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            
+            $('.btnCncl').click(function () {
+                $this = $(this);
+
+                var model = {};
+                model.Id = $this.attr('id');
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/Student/Cancel",
+                    data: JSON.stringify(model),
+                    dataType: "json",
+                    success: function (data) {
+                        if(data.IsSuccessful == false) {
+                            alert(data.Message);
+                        };
+                        window.location.href = "/Student/Requests";
+
+                    },
+                    error: function (result) {
+                        alert("Error");
+                    }
+                });
+
+            });
+
+        });
+    </script>
+
+
+}
