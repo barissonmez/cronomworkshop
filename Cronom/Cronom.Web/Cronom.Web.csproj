@@ -212,6 +212,9 @@
     <Compile Include="Migrations\SeedInitializer.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\JsonResultModel.cs" />
+    <Compile Include="Models\MostRentedBooksPagerViewModel.cs" />
+    <Compile Include="Models\MostRentedBooksReportViewModel.cs" />
+    <Compile Include="Models\PagerModel.cs" />
     <Compile Include="Models\RentalInModel.cs" />
     <Compile Include="Models\BookViewModel.cs" />
     <Compile Include="Models\NewUserViewModel.cs" />
@@ -1275,6 +1278,7 @@
     <Content Include="Views\Student\Detail.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Manager\Requests.cshtml" />
+    <Content Include="Views\Shared\MostRentedBooks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

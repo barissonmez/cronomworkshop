@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using Cronom.Web.Data.DBInteractions.Contracts;
 using Cronom.Web.Domains;
@@ -10,6 +11,7 @@ using Cronom.Web.Domains.Enums;
 using Cronom.Web.Models;
 using Cronom.Web.Services.Contracts;
 using FastMapper;
+using WebGrease.Css.Extensions;
 
 namespace Cronom.Web.Services.Implementations
 {
@@ -21,6 +23,8 @@ namespace Cronom.Web.Services.Implementations
         private readonly IRepository<User> _userRepo;
         private readonly IUnitOfWork _uow;
         private const int AllowedRentalsCount = 2;
+        private const int PageSize = 1;
+        private const int DefaultCurrentPage = 1;
 
         public RentalService(IRepository<Rental> rentalRepo, IRepository<Book> bookRepo, IRepository<User> userRepo, IUnitOfWork uow)
         {
@@ -168,5 +172,49 @@ namespace Cronom.Web.Services.Implementations
 
             return requestsModel;
         }
+
+
+        public MostRentedBooksPagerViewModel GetPager(int? page, string dateRange)
+        {
+            var startDate =  new DateTime();
+            var endDate =  new DateTime();
+
+            if (!string.IsNullOrEmpty(dateRange))
+            {
+                var dates = GetFormattedDates(dateRange);
+
+                startDate = dates[0];
+                endDate = dates[0];
+            }
+
+            var groupedMostRentedBooks = !string.IsNullOrEmpty(dateRange) ? 
+                _rentalRepo.QueryObjectGraph(a => a.State == RentalState.Approved || a.State == RentalState.Returned && startDate >= a.CheckOutDate && endDate <= a.ReturnDate, "Book", "RentedBy").GroupBy(a => a.BookISBN).Select(obj => new { Book = obj.FirstOrDefault(), Count = obj.Count() }).ToList() :
+                _rentalRepo.QueryObjectGraph(a => a.State == RentalState.Approved || a.State == RentalState.Returned, "Book", "RentedBy").GroupBy(a => a.BookISBN).Select(obj => new { Book = obj.FirstOrDefault(), Count = obj.Count() }).ToList();
+            
+
+
+            var data = new List<MostRentedBooksReportViewModel>();
+
+            groupedMostRentedBooks.ForEach(a=> data.Add(new MostRentedBooksReportViewModel()
+            {
+                ISBN = a.Book.BookISBN,
+                Author = a.Book.Book.Author,
+                PublicationYear = a.Book.Book.PublicationYear,
+                Publisher = a.Book.Book.Publisher,
+                Title = a.Book.Book.Title,
+                RentalCount = a.Count
+            }));
+
+            return new MostRentedBooksPagerViewModel
+            {
+                Data = data.OrderByDescending(p => p.RentalCount).ThenBy(a => a.Title).Skip(PageSize * (page.HasValue ? (page.Value - 1) : 0)).Take(PageSize).ToList(),
+                NumberOfPage = Convert.ToInt32(Math.Ceiling((double)data.Count / PageSize)),
+                CurrentPage = page.HasValue ? page.Value : DefaultCurrentPage
+            };
+
+
+        }
     }
 }
+
+

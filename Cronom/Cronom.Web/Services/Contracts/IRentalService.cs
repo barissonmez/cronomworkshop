@@ -16,5 +16,8 @@ namespace Cronom.Web.Services.Contracts
         List<RentalViewModel> GetRentalRequests();
         JsonResultModel Check(RequestCheckInModel model);
         JsonResultModel Cancel(RequestCheckInModel model);
+        MostRentedBooksPagerViewModel GetPager(int? page, string dateRange);
     }
 }
+
+

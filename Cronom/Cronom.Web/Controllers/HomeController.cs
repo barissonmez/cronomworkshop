@@ -84,10 +84,19 @@ namespace Cronom.Web.Controllers
             return View();
         }
 
+
         public ActionResult MostRentedBooksReport()
         {
-            return View();
+            var model = _rentalService.GetPager(null, null);
+            return View(model);
         }
+
+        public ActionResult MostRentedBooks(int page, string dateRange)
+        {
+            var model = _rentalService.GetPager(page, dateRange);
+            return PartialView(model);
+        }
+
 
     }
 }

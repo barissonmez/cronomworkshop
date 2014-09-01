@@ -1,8 +1,39 @@
-﻿
-@{
-    ViewBag.Title = "MostRentedBooksReport";
+﻿@{
+    ViewBag.Title = "En Çok Kiralananlar Raporu";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>MostRentedBooksReport</h2>
+
+<div id="page-heading">
+    <ol class="breadcrumb">
+        <li><a href="#">Rapor Seçenekleri</a></li>
+        <li>En Çok Kiralanan Kitaplar</li>
+    </ol>
+    <h1>En Çok Kiralanan Kitaplar</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>En Çok Kiralananlar</h4>
+                    <div class="options">
+                    </div>
+                </div>
+                    <div class="col-sm-6">
+                            <label class="col-sm-3 control-label">Tarih Aralığı:</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input type="text" class="form-control" id="daterangepicker2">
+                        </div>
+                        <a class="btn btn-success" id="btnFilter" href="javascript:;" style="float:right;">Filtere</a>
+                    </div>
+                
+                <div id="mostRentedBookList" class="panel-body">
+                    @Html.Partial("MostRentedBooks")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
