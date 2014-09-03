@@ -59,5 +59,7 @@ namespace Cronom.Web.Services.Implementations
                 StudentSpecificTotalReadCount = studentSpecificTotalReadCount
             };
         }
+
+
     }
 }

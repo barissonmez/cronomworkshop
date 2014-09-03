@@ -38,6 +38,7 @@ namespace Cronom.Web.Controllers
                 case UserType.SuperAdmin:
                     break;
             }
+
             var model = _dashboardService.GetStats();
             return View(model);
         }

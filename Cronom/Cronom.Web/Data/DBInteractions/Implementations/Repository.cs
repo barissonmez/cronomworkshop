@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using Cronom.Web.Data.DBInteractions.Contracts;
 
@@ -60,9 +61,22 @@ namespace Cronom.Web.Data.DBInteractions.Implementations
             return _dbset.Where(where).ToList();
         }
 
-        public IEnumerable<T> QueryObjectGraph(System.Linq.Expressions.Expression<Func<T, bool>> filter, string children1, string children2)
+        public IEnumerable<T> QueryObjectGraph(Expression<Func<T, bool>> filter, string children1, string children2)
         {
             return _dbset.Include(children1).Include(children2).Where(filter);
+        }
+
+        /// <summary>
+        /// Gets related children objects
+        /// Usage: var test = _rentalRepo.GetAllLazyLoad(a => a.State != RentalState.Returned, b => b.Book, b=> b.RentedBy);
+        /// </summary>
+        /// <param name="filter">Filter By</param>
+        /// <param name="children">Related objects to load</param>
+        /// <returns>Filtered object with related children</returns>
+        public IQueryable<T> GetAllLazyLoad(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] children)
+        {
+            children.ToList().ForEach(x => _dbset.Include(x).Load());
+            return _dbset;
         }
     }
 }
